@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        body{
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .box{
+            border: 2px solid black;
+        }
+
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coustem URL</title>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+    <% if(locals.id){ %>
+        <p>URL Generate : http://localhost:8001/url/<%= id %></p>
+        <% } %>
+        <div>
+          <form method="post" action="/url">
+        <label for="">Enter your original URL</label>
+        <input type="text" name="url" placeholder="http://example.com">
+        <button type="submit">Generate</button>
+    </form>   
+        </div>
+    <div>
+        <% if (locals.urls) { %>
+         <table class="box">
+            <thead class="box">
+                <th class="box">S.no</th>
+                <th class="box">shortID</th>
+                <th class="box">Redirect</th>
+                <th class="box">Click</th>
+            </thead>
+            <tbody class="box">
+                <% urls.forEach((url,index)=> { %>
+                    <tr>
+                 <td class="box"><%= index+1 %></td>
+                 <td class="box"> <%= url.ShortID %></td>
+                 <td class="box"><%= url.redirectURL %></td>
+                 <td class="box"><%= url.visite_History.length %></td>
+                <% }) %></tr>
+            </tbody>
+         </table>
+        <% } %>
+    </div>
+</body>
+</html>
