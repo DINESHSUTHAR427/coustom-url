@@ -10,10 +10,7 @@
     "start": "nodemon index"
   },
   "dependencies": {
-<<<<<<< HEAD
-=======
     "ejs": "^3.1.10",
->>>>>>> 457d44c (add server side rendering)
     "express": "^5.1.0",
     "mongoose": "^8.16.4",
     "nanoid": "^5.1.5",

@@ -10,14 +10,10 @@ async function handleGenerateNewShortUrl (req,res){
         redirectURL: body.url,
         visite_History:[]
     })
-<<<<<<< HEAD
-    return res.json({id:shortid })
-=======
     return res.render('home',{
         id :shortid
     })
     // return res.json({id:shortid })
->>>>>>> 457d44c (add server side rendering)
 }
 
 async function handle_find_shortId (req, res) {
@@ -54,9 +50,5 @@ async function handleGetAnalytics(req,res) {
 module.exports= {
 handleGenerateNewShortUrl,
 handle_find_shortId,
-<<<<<<< HEAD
-handleGetAnalytics
-=======
 handleGetAnalytics,
->>>>>>> 457d44c (add server side rendering)
 } 
