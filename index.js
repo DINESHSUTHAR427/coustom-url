@@ -3,6 +3,9 @@ const path = require("path")
 const urlRoute = require("./router/url")
 const staticeRoute = require("./router/staticerouter.js")
 const userRoute = require("./router/user.js")
+const CookieParser = require("cookie-parser");
+const {restrictsLoginUuid} = require('./middlewares/auth')
+
 
 const {connectedMongooseDb} = require("./connection")
 
@@ -15,9 +18,12 @@ connectedMongooseDb("mongodb://127.0.0.1:27017/short-url").then(
 app.set("view engine","ejs");
 app.set("views",path.resolve("./views"));
 
+
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))
-app.use("/url",urlRoute);
+app.use(CookieParser());
+
+app.use("/url",restrictsLoginUuid, urlRoute);
 app.use('/',staticeRoute);
 app.use("/user",userRoute);
 

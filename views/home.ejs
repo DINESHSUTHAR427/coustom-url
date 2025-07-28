@@ -1,50 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-    <style>
-        body{
-            font-family: 'Courier New', Courier, monospace;
-        }
-        .box{
-            border: 2px solid black;
-        }
-
-    </style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coustem URL</title>
+    <title>Custom URL Shortener</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 2rem 3rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            color: #1c1e21;
+            margin-top: 0;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        .url-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .url-form input[type="text"] {
+            flex-grow: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .url-form input[type="text"]:focus {
+            outline: none;
+            border-color: #1877f2;
+            box-shadow: 0 0 0 2px #e7f3ff;
+        }
+        .url-form button {
+            background-color: #1877f2;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .url-form button:hover {
+            background-color: #166fe5;
+        }
+        .result-container {
+            background-color: #e7f3ff;
+            border-left: 4px solid #1877f2;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            word-break: break-all;
+        }
+        .result-container p {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #1c1e21;
+        }
+        .result-container a {
+            color: #1877f2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .result-container a:hover {
+            text-decoration: underline;
+        }
+        .url-table-container {
+            margin-top: 2rem;
+        }
+        .url-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .url-table th, .url-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .url-table thead th {
+            background-color: #f0f2f5;
+            color: #606770;
+            font-weight: 600;
+        }
+        .url-table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+        .url-table a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+        .url-table a:hover {
+            text-decoration: underline;
+        }
+        .redirect-url a {
+            display: inline-block;
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+        }
+        @media (max-width: 600px) {
+            body { padding: 1rem; }
+            .container { padding: 1.5rem; }
+            h1 { font-size: 2rem; }
+            .url-form { flex-direction: column; }
+        }
+    </style>
 </head>
 <body>
-    <h1>URL Shortener</h1>
-    <% if(locals.id){ %>
-        <p>URL Generate : http://localhost:8001/url/<%= id %></p>
+    <div class="container">
+        <h1>URL Shortener</h1>
+
+        <% if(locals.id) { %>
+            <div class="result-container">
+                <p>URL Generated: <a href="/url/<%= id %>" target="_blank">http://localhost:8001/url/<%= id %></a></p>
+            </div>
         <% } %>
-        <div>
-          <form method="post" action="/url">
-        <label for="">Enter your original URL</label>
-        <input type="text" name="url" placeholder="http://example.com">
-        <button type="submit">Generate</button>
-    </form>   
-        </div>
-    <div>
-        <% if (locals.urls) { %>
-         <table class="box">
-            <thead class="box">
-                <th class="box">S.no</th>
-                <th class="box">shortID</th>
-                <th class="box">Redirect</th>
-                <th class="box">Click</th>
+
+        <form method="post" action="/url" class="url-form">
+            <input type="text" name="url" placeholder="https://example.com" required>
+            <button type="submit">Generate</button>
+        </form>
+
+        <% if (locals.urls && locals.urls.length > 0) { %>
+         <div class="url-table-container">
+            <h2>Your URLs</h2>
+            <table class="url-table">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Short ID</th>
+                    <th>Redirect URL</th>
+                    <th>Clicks</th>
+                </tr>
             </thead>
-            <tbody class="box">
-                <% urls.forEach((url,index)=> { %>
+            <tbody>
+                <% urls.forEach((url, index) => { %>
                     <tr>
-                 <td class="box"><%= index+1 %></td>
-                 <td class="box"> <%= url.ShortID %></td>
-                 <td class="box"><%= url.redirectURL %></td>
-                 <td class="box"><%= url.visite_History.length %></td>
-                <% }) %></tr>
+                         <td><%= index + 1 %></td>
+                         <td><a href="/url/<%= url.ShortID %>" target="_blank"><%= url.ShortID %></a></td>
+                         <td class="redirect-url"><a href="<%= url.redirectURL %>" target="_blank" title="<%= url.redirectURL %>"><%= url.redirectURL %></a></td>
+                         <td><%= url.visite_History.length %></td>
+                    </tr>
+                <% }) %>
             </tbody>
          </table>
+        </div>
         <% } %>
     </div>
 </body>

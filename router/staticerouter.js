@@ -8,4 +8,12 @@ router.get('/',async (req,res) => {
         urls: allUrl,
     });
 })
+
+router.get('/singup',async(req,res) => {
+    return res.render("singup");
+})
+
+router.get('/login',async(req,res) => {
+    return res.render("login");
+})
 module.exports = router;
