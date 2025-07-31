@@ -4,7 +4,7 @@ const urlRoute = require("./router/url")
 const staticeRoute = require("./router/staticerouter.js")
 const userRoute = require("./router/user.js")
 const CookieParser = require("cookie-parser");
-const {restrictsLoginUuid} = require('./middlewares/auth')
+const {restrictsLoginUuid, CheckAuth} = require('./middlewares/auth')
 
 
 const {connectedMongooseDb} = require("./connection")
@@ -24,7 +24,7 @@ app.use(express.urlencoded({extended: false}))
 app.use(CookieParser());
 
 app.use("/url",restrictsLoginUuid, urlRoute);
-app.use('/',staticeRoute);
+app.use('/',CheckAuth,staticeRoute);
 app.use("/user",userRoute);
 
 

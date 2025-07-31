@@ -1,5 +1,6 @@
-const {nanoid} = require("nanoid")
-const url = require("../models/url.js")
+const {nanoid} = require("nanoid");
+const url = require("../models/url.js");
+const User = require("../models/user.js");
 
 async function handleGenerateNewShortUrl (req,res){
     const body = req.body;
@@ -8,7 +9,8 @@ async function handleGenerateNewShortUrl (req,res){
     await url.create({
         ShortID : shortid,
         redirectURL: body.url,
-        visite_History:[]
+        visite_History:[],
+        createdBy : req.user._id,
     })
     return res.render('home',{
         id :shortid
